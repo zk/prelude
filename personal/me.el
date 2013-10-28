@@ -72,6 +72,8 @@
 
 ;; Editor
 
+(setq prelude-whitespace nil)
+
 (require 'git-gutter-fringe)
 (global-git-gutter-mode +1)
 
@@ -90,11 +92,15 @@
   '(add-to-list 'ac-modes 'cider-repl-mode))
 
 (setq ac-use-menu-map t)
+
 ;; Default settings
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
 
-;;
+;; Windows
+
+(require 'window-numbering)
+(window-numbering-mode 1)
 
 ;; elisp
 
@@ -103,10 +109,23 @@
 
 ;; Clojure
 
+(define-key clojure-mode-map (kbd "C-o") 'cider-eval-expression-at-point)
+(define-key clojure-mode-map (kbd "C-j") 'save-buffer)
+
+(defun my/clojure-mode-hooks ()
+  (my/turn-on 'paredit-mode))
+
+(add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
+
 (defun my/cider-mode-hooks ()
   "Clojure specific setup code that should only be run when we
   have a CIDER REPL connection"
   (cider-turn-on-eldoc-mode))
+
+
+;; Paredit
+
+(define-key paredit-mode-map (kbd "C-j") 'save-buffer)
 
 ;;(add-hook 'cider-mode-hook 'my/cider-mode-hooks)
 

@@ -38,4 +38,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(helm-candidate-number ((t (:background "light slate gray" :foreground "black"))))
- '(helm-source-header ((t (:background "#22083397778B" :foreground "white" :weight bold :height 1)))))
+ '(helm-source-header ((t (:background "#22083397778B" :foreground "white" :weight bold :height 1))))
+ '(highlight ((t (:background "dark goldenrod"))))
+ '(whitespace-empty ((t (:background "dark goldenrod" :foreground "firebrick")))))
