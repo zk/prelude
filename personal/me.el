@@ -194,6 +194,14 @@
                  (jar-path (construct-jar-path npath lib version)))
             (find-file (file-truename jar-path))))))))
 
+(define-clojure-indent
+  (or 0)
+  (and 0)
+  (-> 0)
+  (->> 0)
+  (str 0)
+  (merge 0))
+
 
 ;; Paredit
 
@@ -210,10 +218,7 @@
 
 (add-hook 'cider-repl-mode-hook 'my/cider-repl-mode-hooks)
 
-
 (setq prelude-guru nil)
-
-
 ;; CSS
 
 (setq css-indent-offset 2)

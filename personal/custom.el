@@ -4,6 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start nil)
+ '(clojure-defun-indents nil)
+ '(clojure-defun-style-default-indent t)
  '(fci-rule-color "#383838")
  '(helm-split-window-default-side (quote same))
  '(helm-split-window-in-side-p nil)
