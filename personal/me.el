@@ -59,6 +59,7 @@
 (global-set-key (kbd "M-<backspace>") 'kill-region)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 (global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "RET") 'newline-and-indent)
 
 
 
@@ -208,3 +209,17 @@
               'highlight-parentheses))
 
 (add-hook 'cider-repl-mode-hook 'my/cider-repl-mode-hooks)
+
+
+(setq prelude-guru nil)
+
+
+;; CSS
+
+(setq css-indent-offset 2)
+(setq js-indent-level 2)
+
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+;;(require 'smooth-scrolling)
+(setq scroll-margin 5)
