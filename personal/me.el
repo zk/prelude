@@ -157,6 +157,42 @@
 
 (define-key clojure-test-mode-map (kbd "C-c C-,") 'my/cider-run-tests)
 
+(defun open-lein-dep ()
+  (interactive)
+  (flet ((parse-name-parts
+          (name)
+          (let ((pos (string-match (regexp-quote "/") name)))
+            (if (numberp pos)
+                (let* ((parts (split-string name "/"))
+                       (first (car parts))
+                       (second (car (cdr parts))))
+                  (list first second))
+              (list name name))))
+
+         (name-path
+          (parts)
+          (concat (replace-regexp-in-string (regexp-quote ".") "/" (car parts))
+                  "/"
+                  (car (cdr parts))))
+
+         (construct-jar-path
+          (name-path lib version)
+          (concat
+           "~/.m2/repository/"
+           name-path "/"
+           version "/"
+           lib "-" version ".jar")))
+    (let ((dep-str (thing-at-point 'list)))
+      (string-match "\\[\\([^\s]+\\)\s+\"\\([^\]]+\\)\"" dep-str)
+      (let ((name (match-string 1 dep-str))
+            (version (match-string 2 dep-str)))
+        (when (and name version)
+          (let* ((name-parts (parse-name-parts name))
+                 (lib (car (cdr name-parts)))
+                 (npath (name-path name-parts))
+                 (jar-path (construct-jar-path npath lib version)))
+            (find-file (file-truename jar-path))))))))
+
 
 ;; Paredit
 
