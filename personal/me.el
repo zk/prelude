@@ -82,8 +82,13 @@
       ac-quick-help-delay 0.5
       ac-use-fuzzy t)
 
+(defun my/ac-start-and-complete ()
+  (interactive)
+  (ac-start))
+
 (global-auto-complete-mode +1)
-(global-set-key (kbd "M-/") 'ac-expand)
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-M-/" 'my/ac-start-and-complete))
 
 (require 'ac-nrepl)
 (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
@@ -92,15 +97,35 @@
   '(add-to-list 'ac-modes 'cider-repl-mode))
 
 (setq ac-use-menu-map t)
-
-;; Default settings
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
+
+
+;; Filesystem
+
+(require 'helm)
+(require 'helm-projectile)
+
+(defun my/helm-projectile ()
+  (interactive)
+  (helm :sources '(helm-source-projectile-files-list
+                   helm-source-projectile-buffers-list)
+        :buffer "*helm projectile*"
+        :candidate-number-limit 50
+        :prompt (projectile-prepend-project-name "pattern: ")))
+
+(global-set-key (kbd "M-t") 'my/helm-projectile)
+
+
+(require 'ido)
+(define-key ido-file-completion-map (kbd "C-w") 'backward-kill-word)
+
 
 ;; Windows
 
 (require 'window-numbering)
 (window-numbering-mode 1)
+
 
 ;; elisp
 
@@ -111,9 +136,10 @@
 
 (define-key clojure-mode-map (kbd "C-o") 'cider-eval-expression-at-point)
 (define-key clojure-mode-map (kbd "C-j") 'save-buffer)
+(define-key clojure-mode-map (kbd "RET") 'paredit-newline)
 
 (defun my/clojure-mode-hooks ()
-  (my/turn-on 'paredit-mode))
+  (my/turn-on 'paredit-mode 'rainbow-delimiters))
 
 (add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
 
@@ -122,10 +148,21 @@
   have a CIDER REPL connection"
   (cider-turn-on-eldoc-mode))
 
+(defun my/cider-run-tests ()
+  (interactive)
+  (when (and (buffer-modified-p)
+             (y-or-n-p (format "Save file %s? " (buffer-file-name))))
+    (save-buffer))
+  (cider-interactive-eval (format "(load-file \"%s\") (run-tests)" (buffer-file-name))))
+
+(define-key clojure-test-mode-map (kbd "C-c C-,") 'my/cider-run-tests)
+
 
 ;; Paredit
 
+(require 'paredit)
 (define-key paredit-mode-map (kbd "C-j") 'save-buffer)
+(define-key paredit-mode-map (kbd "C-w") 'paredit-backward-kill-word)
 
 ;;(add-hook 'cider-mode-hook 'my/cider-mode-hooks)
 
