@@ -10,6 +10,7 @@
  '(helm-split-window-default-side (quote same))
  '(helm-split-window-in-side-p nil)
  '(nrepl-port "7888")
+ '(projectile-completion-system (quote ido))
  '(sp-highlight-pair-overlay nil)
  '(sp-highlight-wrap-overlay nil)
  '(sp-highlight-wrap-tag-overlay nil)

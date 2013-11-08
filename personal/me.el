@@ -89,7 +89,7 @@
 
 (global-auto-complete-mode +1)
 (global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "C-M-/" 'my/ac-start-and-complete))
+(global-set-key (kbd "C-M-/") 'my/ac-start-and-complete)
 
 (require 'ac-nrepl)
 (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
@@ -120,6 +120,9 @@
 
 (require 'ido)
 (define-key ido-file-completion-map (kbd "C-w") 'backward-kill-word)
+
+;; Clean up whitespace on save
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 
 ;; Windows
@@ -156,6 +159,7 @@
     (save-buffer))
   (cider-interactive-eval (format "(load-file \"%s\") (run-tests)" (buffer-file-name))))
 
+(require 'clojure-test-mode)
 (define-key clojure-test-mode-map (kbd "C-c C-,") 'my/cider-run-tests)
 
 (defun open-lein-dep ()
@@ -200,7 +204,8 @@
   (-> 0)
   (->> 0)
   (str 0)
-  (merge 0))
+  (merge 0)
+  (= 0))
 
 
 ;; Paredit
@@ -219,12 +224,23 @@
 (add-hook 'cider-repl-mode-hook 'my/cider-repl-mode-hooks)
 
 (setq prelude-guru nil)
+
+
 ;; CSS
 
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 
+(defun my/scss-mode-hooks ()
+  (my/turn-on 'smartparens-mode 'auto-complete-mode))
+
+(add-hook 'scss-mode-hook 'my/scss-mode-hooks)
+
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;;(require 'smooth-scrolling)
 (setq scroll-margin 5)
+
+
+(require 'flx-ido)
+(flx-ido-mode +1)
