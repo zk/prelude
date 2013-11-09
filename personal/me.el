@@ -236,6 +236,22 @@
 
 (add-hook 'scss-mode-hook 'my/scss-mode-hooks)
 
+(defvar hexcolor-keywords
+  '(("#[abcdef[:digit:]]+"
+     (0 (put-text-property
+         (match-beginning 0)
+         (match-end 0)
+         'face (list :background
+                     (match-string-no-properties 0)))))))
+
+(defun hexcolor-add-to-font-lock ()
+  (font-lock-add-keywords nil hexcolor-keywords))
+
+(add-hook 'css-mode-hook 'hexcolor-add-to-font-lock)
+
+
+;; ORG
+
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;;(require 'smooth-scrolling)
