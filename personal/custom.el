@@ -11,6 +11,7 @@
  '(helm-split-window-in-side-p nil)
  '(nrepl-port "7888")
  '(projectile-completion-system (quote ido))
+ '(scss-compile-at-save nil)
  '(sp-highlight-pair-overlay nil)
  '(sp-highlight-wrap-overlay nil)
  '(sp-highlight-wrap-tag-overlay nil)
