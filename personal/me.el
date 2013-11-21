@@ -109,8 +109,11 @@
 
 (defun my/helm-projectile ()
   (interactive)
+  (helm-occur-init-source)
+  (setq helm-multi-occur-buffer-list (list (buffer-name (current-buffer))))
   (helm :sources '(helm-source-projectile-files-list
-                   helm-source-projectile-buffers-list)
+                   ;;helm-source-projectile-buffers-list
+                   helm-source-moccur)
         :buffer "*helm projectile*"
         :candidate-number-limit 50
         :prompt (projectile-prepend-project-name "pattern: ")))
@@ -205,7 +208,10 @@
   (->> 0)
   (str 0)
   (merge 0)
-  (= 0))
+  (= 0)
+  (not= 0))
+
+(add-to-list 'auto-mode-alist '("\\.cljx\\'" . clojure-mode))
 
 
 ;; Paredit
@@ -232,9 +238,11 @@
 (setq js-indent-level 2)
 
 (defun my/scss-mode-hooks ()
-  (my/turn-on 'smartparens-mode 'auto-complete-mode))
+  (my/turn-on 'smartparens-mode 'auto-complete-mode 'flycheck-mode))
 
 (add-hook 'scss-mode-hook 'my/scss-mode-hooks)
+
+(add-hook 'css-mode-hook 'my/scss-mode-hooks)
 
 (defvar hexcolor-keywords
   '(("#[abcdef[:digit:]]+"
