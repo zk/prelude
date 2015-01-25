@@ -78,29 +78,7 @@
 (require 'git-gutter-fringe)
 (global-git-gutter-mode +1)
 
-(require 'auto-complete)
-(setq ac-auto-show-menu t
-      ac-quick-help-delay 0.5
-      ac-use-fuzzy t)
-
-(defun my/ac-start-and-complete ()
-  (interactive)
-  (ac-start))
-
-(global-auto-complete-mode +1)
-(global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "C-M-/") 'my/ac-start-and-complete)
-
-(require 'ac-nrepl)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-repl-mode))
-
-(setq ac-use-menu-map t)
-(define-key ac-menu-map "\C-n" 'ac-next)
-(define-key ac-menu-map "\C-p" 'ac-previous)
-
+;;(global-set-key (kbd "M-/") 'hippie-expand)
 
 ;; Filesystem
 
@@ -141,7 +119,9 @@
 
 ;; Clojure
 
-(define-key clojure-mode-map (kbd "C-o") 'cider-eval-expression-at-point)
+(require 'clojure-mode)
+
+(define-key clojure-mode-map (kbd "C-o") 'cider-eval-defun-at-point)
 (define-key clojure-mode-map (kbd "C-j") 'save-buffer)
 (define-key clojure-mode-map (kbd "RET") 'paredit-newline)
 
@@ -154,16 +134,6 @@
   "Clojure specific setup code that should only be run when we
   have a CIDER REPL connection"
   (cider-turn-on-eldoc-mode))
-
-(defun my/cider-run-tests ()
-  (interactive)
-  (when (and (buffer-modified-p)
-             (y-or-n-p (format "Save file %s? " (buffer-file-name))))
-    (save-buffer))
-  (cider-interactive-eval (format "(load-file \"%s\") (run-tests)" (buffer-file-name))))
-
-(require 'clojure-test-mode)
-(define-key clojure-test-mode-map (kbd "C-c C-,") 'my/cider-run-tests)
 
 (defun open-lein-dep ()
   (interactive)
@@ -213,6 +183,8 @@
 
 (add-to-list 'auto-mode-alist '("\\.cljx\\'" . clojure-mode))
 
+(setq cider-auto-select-error-buffer nil)
+
 
 ;; Paredit
 
@@ -230,6 +202,11 @@
 (add-hook 'cider-repl-mode-hook 'my/cider-repl-mode-hooks)
 
 (setq prelude-guru nil)
+
+(define-key clojure-mode-map (kbd "C-c C-j") 'cider-restart)
+
+
+
 
 
 ;; CSS
@@ -265,6 +242,103 @@
 ;;(require 'smooth-scrolling)
 (setq scroll-margin 5)
 
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 (require 'flx-ido)
 (flx-ido-mode +1)
+
+
+;; Ruby
+
+(require 'ruby-mode)
+(define-key ruby-mode-map (kbd "M-q") 'indent-region)
+
+
+(setq org-src-fontify-natively t)
+
+(setq ido-everywhere t)
+
+
+;; Company Mode
+
+(require 'color)
+
+(let ((bg (face-attribute 'default :background)))
+  (custom-set-faces
+   `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+   `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+   `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+   `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+   `(company-tooltip-common ((t (:inherit font-lock-constant-face))))
+   `(company-tooltip-common-selection ((t (:inherit font-lock-keyword-face))))))
+
+
+
+;; Don't split windows automatically
+(setq pop-up-windows nil)
+
+(defun nrepl-reup ()
+  (interactive)
+  (cider-interactive-eval "(user/reup)"))
+
+
+(global-set-key (kbd "C-c C-o") 'nrepl-reup)
+
+(global-set-key (kbd "M-o") 'helm-occur)
+(define-key prelude-mode-map (kbd "M-o") 'helm-occur)
+
+(setq helm-follow-mode-persistent t)
+(helm-occur-init-source)
+
+(helm-attrset 'follow 1 helm-source-occur)
+(helm-attrset 'follow 1 helm-source-moccur)
+
+(require 'thingatpt)
+
+(defun find-clojurescript-tag ()
+  (interactive)
+  (find-tag (car (last (split-string (thing-at-point 'symbol) "/")))))
+
+(defun find-clojurescript-tag-other-window ()
+  (interactive)
+  (find-tag-other-window (car (last (split-string (thing-at-point 'symbol) "/")))))
+
+(define-key clojure-mode-map (kbd "M-i") 'find-clojurescript-tag)
+(define-key clojure-mode-map (kbd "M-I") 'find-clojurescript-tag-other-window)
+
+;; Don't visit tags table after regen
+(defun zk-regenerate-tags ()
+  "Regenerate the project's [e|g]tags."
+  (interactive)
+  (if (boundp 'ggtags-mode)
+      (progn
+        (let* ((ggtags-project-root (projectile-project-root))
+               (default-directory ggtags-project-root))
+          (ggtags-ensure-project)
+          (ggtags-update-tags t)))
+    (let* ((project-root (projectile-project-root))
+           (tags-exclude (projectile-tags-exclude-patterns))
+           (default-directory project-root)
+           (tags-file (expand-file-name projectile-tags-file-name))
+           (command (format projectile-tags-command tags-file tags-exclude))
+           shell-output exit-code)
+      (with-temp-buffer
+        (setq exit-code
+              (call-process-shell-command command nil (current-buffer))
+              shell-output
+              (s-trim (buffer-substring (point-min) (point-max)))))
+      (unless (zerop exit-code)
+        (error shell-output)))))
+
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook 'zk-regenerate-tags nil 'make-it-local)))
+
+(setq backup-directory-alist `(("." . "~/.em-saves")))
+
+(set-face-attribute 'default nil :height 140)
+
+(set-default-font "Inconsolata")
+(setq-default line-spacing 3)
