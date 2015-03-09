@@ -1,0 +1,73 @@
+;; -*- emacs-lisp -*- <14/09/28 18:34:19 /Users/zk/.emacs.d/tramp>
+;; Tramp connection history.  Don't change this file.
+;; You can delete it, forcing Tramp to reapply the checks.
+
+((["ssh" "ubuntu" "chauncey.zaarly.co" nil nil]
+  ("uname" "Linux 3.2.0-56-virtual")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 1000))
+ (["ssh" "root" "192.241.211.125" nil nil]
+  ("uname" "Linux 3.8.0-29-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("uid-integer" 0)
+  ("ls" "/bin/ls --color=never"))
+ (["ssh" nil "ssh" nil nil]
+  nil)
+ (["ssh" nil "sudo" nil nil]
+  nil)
+ (["sudo" "root" "clojuredocs.org" nil "ssh:clojuredocs.org|"]
+  nil)
+ (["sudo" "root" "clojuredocs.org" nil nil]
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("readlink" "\\readlink")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("uid-integer" 0))
+ (["ssh" "ubuntu" "clojuredocs.org" nil nil]
+  nil)
+ (["sudo" "root" "clojuredocs.org" nil "ssh:ubuntu@clojuredocs.org|"]
+  ("uname" "Linux 3.13.0-29-generic")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("test" "test")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("uid-integer" 0)
+  ("ls" "/bin/ls --color=never"))
+ (["ssh" nil "clojuredocs.org" nil nil]
+  nil))
