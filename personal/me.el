@@ -46,6 +46,12 @@
   (dolist (m mode-list)
     (funcall (my/->mode m) +1)))
 
+
+;; Repos
+
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+
 ;; Key Setup
 
 (setq mac-command-modifier 'meta)
@@ -127,6 +133,8 @@
 
 
 ;; Clojure
+
+(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 (require 'clojure-mode)
 
@@ -291,7 +299,6 @@
 (defun nrepl-reup ()
   (interactive)
   (cider-interactive-eval "(user/reup)"))
-
 
 (global-set-key (kbd "C-c C-o") 'nrepl-reup)
 
