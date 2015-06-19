@@ -60,6 +60,7 @@
 
 ;;(set-fringe-style 1)
 
+;; cli
 (toggle-scroll-bar 0)
 (global-hl-line-mode -1)
 (key-chord-mode -1)
@@ -90,6 +91,8 @@
 
 (setq prelude-whitespace nil)
 
+
+;; cli
 (require 'git-gutter-fringe)
 (global-git-gutter-mode +1)
 
@@ -282,6 +285,7 @@
 
 (require 'color)
 
+;; cli
 (let ((bg (face-attribute 'default :background)))
   (custom-set-faces
    `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
@@ -426,3 +430,6 @@
   (defalias 'winner-set 'winner-set1))
 
 (winner-mode 1)
+
+;; cli
+;;(menu-bar-mode -1)
