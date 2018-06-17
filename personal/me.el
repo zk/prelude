@@ -116,6 +116,10 @@
 
 (global-set-key (kbd "M-t") 'my/helm-projectile)
 
+(setq projectile-enable-caching t)
+
+;; Invalidate all project caches at startup
+(setq projectile-projects-cache (make-hash-table :test 'equal))
 
 (require 'ido)
 (define-key ido-file-completion-map (kbd "C-w") 'backward-kill-word)
@@ -201,9 +205,11 @@
   (= 0)
   (not= 0))
 
-(add-to-list 'auto-mode-alist '("\\.cljx\\'" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
 
 (setq cider-auto-select-error-buffer nil)
+
+(setq cider-auto-jump-to-error nil)
 
 
 ;; Paredit
@@ -224,9 +230,27 @@
 (setq prelude-guru nil)
 
 (define-key clojure-mode-map (kbd "C-c C-j") 'cider-restart)
+(define-key clojure-mode-map (kbd "C-c C-o") 'nrepl-reup)
+
+(defun local-set-minor-mode-key (mode key def)
+  "Overrides a minor mode keybinding for the local
+   buffer, by creating or altering keymaps stored in buffer-local
+   `minor-mode-overriding-map-alist'."
+  (let* ((oldmap (cdr (assoc mode minor-mode-map-alist)))
+         (newmap (or (cdr (assoc mode minor-mode-overriding-map-alist))
+                     (let ((map (make-sparse-keymap)))
+                       (set-keymap-parent map oldmap)
+                       (push `(,mode . ,map) minor-mode-overriding-map-alist)
+                       map))))
+    (define-key newmap key def)))
 
 
+;(local-set-minor-mode-key 'cider-mode (kbd "C-c C-o") 'nrepl-reup)
+(local-set-minor-mode-key 'clojure-mode (kbd "C-c C-o") 'nrepl-reup)
+(local-set-minor-mode-key 'clojurec-mode (kbd "C-c C-o") 'nrepl-reup)
 
+(require 'cider)
+(define-key cider-mode-map (kbd "C-c C-o") 'nrepl-reup)
 
 
 ;; CSS
@@ -313,7 +337,7 @@
 (helm-occur-init-source)
 
 (helm-attrset 'follow 1 helm-source-occur)
-(helm-attrset 'follow 1 helm-source-moccur)
+;(helm-attrset 'follow 1 helm-source-moccur)
 
 (require 'thingatpt)
 
@@ -358,8 +382,9 @@
 
 (setq backup-directory-alist `(("." . "~/.em-saves")))
 
-(set-face-attribute 'default nil :height 120)
-(set-default-font "Monaco")
+(set-face-attribute 'default nil :height 140)
+;;(set-default-font "Monaco")
+(set-default-font "Source Code Pro")
 (setq-default line-spacing 0)
 
 ;; Prevent CTRL-Z from minimizing Emacs
@@ -433,3 +458,17 @@
 
 ;; cli
 ;;(menu-bar-mode -1)
+
+
+(defun yank-quoted()
+  (interactive)
+  (if (nth 3 (syntax-ppss)) ;; Checks if inside a string
+      (insert-for-yank (replace-regexp-in-string "[\\\"]"
+                                                 "\\\\\\&"
+                                                 (current-kill 0)
+                                                 t))
+    (call-interactively 'yank)))
+
+
+;; undo tree
+(global-set-key (kbd "C-M-/") 'undo-tree-redo)

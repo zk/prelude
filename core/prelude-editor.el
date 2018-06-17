@@ -224,7 +224,7 @@ The body of the advice is in BODY."
       ido-default-file-method 'selected-window
       ido-auto-merge-work-directories-length -1)
 (ido-mode +1)
-(ido-ubiquitous-mode +1)
+;(ido-ubiquitous-mode +1)
 ;; smarter fuzzy matching for ido
 (flx-ido-mode +1)
 ;; disable ido faces to see flx highlights

@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <14/09/28 18:34:19 /Users/zk/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <18/06/16 15:29:20 /Users/zk/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -32,12 +32,6 @@
   ("gid-integer" 0)
   ("uid-integer" 0)
   ("ls" "/bin/ls --color=never"))
- (["ssh" nil "ssh" nil nil]
-  nil)
- (["ssh" nil "sudo" nil nil]
-  nil)
- (["sudo" "root" "clojuredocs.org" nil "ssh:clojuredocs.org|"]
-  nil)
  (["sudo" "root" "clojuredocs.org" nil nil]
   ("test" "test")
   ("remote-path"
@@ -51,8 +45,6 @@
   ("perl-cwd-realpath" t)
   ("perl" "\\perl")
   ("uid-integer" 0))
- (["ssh" "ubuntu" "clojuredocs.org" nil nil]
-  nil)
  (["sudo" "root" "clojuredocs.org" nil "ssh:ubuntu@clojuredocs.org|"]
   ("uname" "Linux 3.13.0-29-generic")
   ("remote-path"
@@ -69,5 +61,29 @@
   ("gid-integer" 0)
   ("uid-integer" 0)
   ("ls" "/bin/ls --color=never"))
- (["ssh" nil "clojuredocs.org" nil nil]
+ (["ssh" "ubuntu" "prtim" nil nil]
+  ("locale" "LC_ALL=en_US.utf8")
+  ("uname" "Linux 4.4.0-1060-aws")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-string" "ubuntu")
+  ("gid-integer" 1000)
+  ("readlink" "\\readlink")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("git" "\\git")
+  ("~" "/home/ubuntu")
+  ("ls" "/bin/ls --color=never")
+  ("ls-dired" t)
+  ("gvfs-monitor-dir" nil)
+  ("inotifywait" nil))
+ (["ssh" nil "ssh" nil nil]
+  nil)
+ (["ssh" nil "prtim" nil nil]
   nil))
